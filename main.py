@@ -4,38 +4,34 @@ import os as OS
 from rich import print as rprint
 from rich.columns import Columns
 from rich.panel import Panel
+import shutil
 
 
 # OS, CPU, RAM, disk space, etc.
 
-BYTES_IN_GB = 1e9
+def bytes_to_gib(bytes):
+  return bytes / (1024 ** 3)
 
+def bytes_to_gb(bytes):
+  return bytes / 1e9
 
-
-
-
-my_os = Platform.system()
-
-my_uname = Platform.uname()
-# print(my_uname)
-my_machine = Platform.machine()
-
-my_cpu = Platform.processor()
-# print(my_cpu)
+my_os = "OS: " + Platform.system()
+if my_os == "OS: Darwin":
+  my_os += "(Apple)"
+# my_uname = Platform.uname()
+my_cpu = "CPU: " + Platform.machine()
 
 mem = PSUtil.virtual_memory()
-total_mem = mem.total / BYTES_IN_GB
+total_mem = bytes_to_gib(mem.total)
+my_total_mem = "RAM: " + str(total_mem) + " GB"
 
-ds = PSUtil.disk_usage('/')
+ds = shutil.disk_usage('/')
 
+final_string = 'System Info\n-------------'
+final_string += "\n" + my_os
+final_string += "\n" + my_cpu
+final_string += "\n" + my_total_mem
+final_string += "\nDisk Space:\n" + "\tTotal: " + format(bytes_to_gb(ds.total), '.3f') + " GB\n\tUsed: " + format(bytes_to_gb(ds.used), '.3f') + " GB\n\tFree: "+ format(bytes_to_gb(ds.free), '.3f') + " GB"
 
-print("OS: " + my_os)
-print("CPU: " + my_cpu)
-print("RAM: " + format(total_mem, '.3f') + " GB")
-print("Disk Space:")
-print("\tTotal: " + format(ds.total / BYTES_IN_GB, '.3f') + " GB\n\tUsed: " + format(ds.used / BYTES_IN_GB, '.3f') + " GB\n\tFree: "+ format(ds.free / BYTES_IN_GB, '.3f') + " GB") 
-
-rprint(Columns([my_os, my_cpu, my_machine], padding=(3,3)))
-
-# i need to build the string first, then pass it to the Panel
-rprint(Panel(my_os + "\n" + my_cpu + "\n" + my_machine, expand=False))
+print(total_mem)
+rprint(Panel(final_string, width=50))

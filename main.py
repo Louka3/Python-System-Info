@@ -30,17 +30,18 @@ conv = {}
 
 # >>> for field, value in zip(jane._fields, jane):
 # ...     print(field, "->", value)
-dict = {}
-for field, value in zip(mem._fields, mem):
-  dict[field]=value
-  print('>>> '+field+' -> '+str(value))
+# dict = {}
+# for field, value in zip(mem._fields, mem):
+#   dict[field]=value
+#   print('>>> '+field+' -> '+str(value))
 
-for key in dict:
-  print('>> '+key+' -> '+str(dict[key]))
+# for key in dict:
+#   print('>> '+key+' -> '+str(dict[key]))
 
 
 
 final_string = 'System Info\n-------------'
+
 final_string += "\n" + my_os
 final_string += "\n" + my_cpu
 final_string += "\n" + my_total_mem

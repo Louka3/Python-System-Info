@@ -23,9 +23,22 @@ my_cpu = "CPU: " + Platform.machine()
 
 mem = PSUtil.virtual_memory()
 total_mem = bytes_to_gib(mem.total)
-my_total_mem = "RAM: " + str(total_mem) + " GB"
+my_total_mem = "RAM: " + format(total_mem, '.3f') + " GB"
 
 ds = shutil.disk_usage('/')
+conv = {}
+
+# >>> for field, value in zip(jane._fields, jane):
+# ...     print(field, "->", value)
+dict = {}
+for field, value in zip(mem._fields, mem):
+  dict[field]=value
+  print('>>> '+field+' -> '+str(value))
+
+for key in dict:
+  print('>> '+key+' -> '+str(dict[key]))
+
+
 
 final_string = 'System Info\n-------------'
 final_string += "\n" + my_os
@@ -33,5 +46,5 @@ final_string += "\n" + my_cpu
 final_string += "\n" + my_total_mem
 final_string += "\nDisk Space:\n" + "\tTotal: " + format(bytes_to_gb(ds.total), '.3f') + " GB\n\tUsed: " + format(bytes_to_gb(ds.used), '.3f') + " GB\n\tFree: "+ format(bytes_to_gb(ds.free), '.3f') + " GB"
 
-print(total_mem)
+# print(mem)
 rprint(Panel(final_string, width=50))
